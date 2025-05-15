@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  bot:
+    image: githubname/image_name:latest
+    env_file:
+      - .env_spisok
+    depends_on:
+      - mongodb
+      - backend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  backend:
+    image: githubname/image_name:latest
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mongodb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "41524:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+volumes:
+  mongo_data:
